@@ -1,8 +1,8 @@
 import { clerkMiddleware , createRouteMatcher } from '@clerk/nextjs/server';
 import {  NextResponse } from 'next/server'; 
 
-const isProtectedRoute = createRouteMatcher(["/dashboard"])
-const publicRoutes = createRouteMatcher(["/", "/api/webhook/register", "/sign-in(.*)", "/sign-in(.*)"]);
+const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"])
+const ispublicRoutes = createRouteMatcher(["/", "/api/webhook/register", "/sign-up(.*)", "/sign-in(.*)"]);
 
 // export default clerkMiddleware()
 
@@ -13,9 +13,10 @@ export default clerkMiddleware(async (auth, req) => {
         if (!isAuthenticated && isProtectedRoute(req)) {
             return NextResponse.redirect(new URL("/sign-in", req.url))
         }
-        if(isAuthenticated && publicRoutes(req)){
+        if(isAuthenticated && ispublicRoutes(req)){
             return NextResponse.redirect(new URL("/dashboard", req.url))
         }
+        return NextResponse.next();
     } catch (error) {
         console.error("Error fetching user data from Clerk:", error);
         return NextResponse.redirect(new URL("/error", req.url));
