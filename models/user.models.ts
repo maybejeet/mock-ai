@@ -4,7 +4,7 @@ interface User{
     username: string;
     email: string;
 }
-
+//TODO: Use proper schema for users
 const UserSchema  = new Schema<User>({
     username : {
         type : String,
