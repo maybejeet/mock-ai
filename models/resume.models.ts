@@ -1,16 +1,23 @@
-import mongoose from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
-interface Resume{
-    parsedData : object
+export interface IResume {
+    _id: Types.ObjectId;
+    user: Types.ObjectId;
+    parsedText: Record<string, unknown>;
 }
 
-//TODO: Add proper schema with user details also
-
-const ResumeSchema = new mongoose.Schema<Resume>(
+const ResumeSchema = new Schema<IResume>(
     {
-    parsedData: { type: Object, required: true }
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+            index: true,
+        },
+        parsedText: { type: Schema.Types.Mixed, required: true },
     },
     { timestamps: true }
 );
+ResumeSchema.index({ user: 1 }, { unique: true });
 
-export const Resume = mongoose.models.Resume <Resume> || mongoose.model("Resume", ResumeSchema);
+export const ResumeModel = model<IResume>("Resume", ResumeSchema);
