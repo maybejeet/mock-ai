@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import {InterviewTemplateModel} from "@/models/interview_template.models";
 import { Mongoose } from "mongoose";
 import { UserModel } from "@/models/user.models";
+import dbConnect from "@/lib/dbConnect";
 
 export async function POST(request: Request) {
   const { userId } = await auth();
@@ -13,6 +14,7 @@ export async function POST(request: Request) {
     return new Response("Missing required fields", { status: 400 });
   }
   try {
+    await dbConnect();
     const user = await UserModel.findOne({clerkId: userId})
     if (!user) return new Response("User not found", { status: 404 });
     const user_id = user._id.toString();
