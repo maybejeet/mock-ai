@@ -3,8 +3,10 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { UserModel } from "@/models/user.models";
 import dbConnect from "@/lib/dbConnect";
+import { log } from "console";
 
 export async function POST(req: Request) {
+    console.log("webhook initialized")
     const webhookSecert = process.env.CLERK_WEBHOOK_SECRET;
     if (!webhookSecert) {
         throw new Error("No webhook secret found");
@@ -18,7 +20,8 @@ export async function POST(req: Request) {
         throw new Error("Error occured - svix payload details missing");
     }
 
-    const payload = await req.json();
+  const payload = await req.json();
+  console.log("Got webhook payload", payload)
     const body = JSON.stringify(payload);
 
     const wh = new Webhook(webhookSecert);
@@ -38,7 +41,7 @@ export async function POST(req: Request) {
 
     const { id } = evt.data;
     const evtType = evt.type;
-
+    console.log("EVT in webhook--> ", evt);
     if (evtType === "user.created") {
         try {
             await dbConnect();
@@ -63,6 +66,7 @@ export async function POST(req: Request) {
                 interviewsCreated: 0,
                 interviewsAttended: 0
             });
+            console.log("User created successfully", user);
             if (!user) {
                 return new Response("No new user found", { status: 500 });
             }

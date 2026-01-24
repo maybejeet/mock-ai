@@ -22,7 +22,10 @@ export default clerkMiddleware(async (auth, req : NextRequest) => {
                 new URL("/sign-in", req.url)
             );
         }
-
+        if (isPublicRoute(req)) {
+                console.log(`[Middleware] Allowing public access to: ${req.nextUrl.pathname}`);
+                return NextResponse.next();
+        }
         if (userId) {
             const client = await clerkClient();
             const user = await client.users?.getUser(userId);
