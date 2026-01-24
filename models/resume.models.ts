@@ -2,13 +2,13 @@ import { Schema, model, Types } from "mongoose";
 
 export interface IResume {
     _id: Types.ObjectId;
-    user: Types.ObjectId;
+    userId: Types.ObjectId;
     parsedText: Record<string, unknown>;
 }
 
 const ResumeSchema = new Schema<IResume>(
     {
-        user: {
+        userId: {
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true,

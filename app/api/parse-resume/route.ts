@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
 import dbConnect from "@/lib/dbConnect";
-import { Resume } from "@/models/resume.models";
+import { ResumeModel } from "@/models/resume.models";
 import { downloadFile, cleanupFile } from "@/lib/downloadFile";
 import { parseResumeWithAI } from "@/services/parse-resume-with-ai";
+import { Mongoose } from "mongoose";
 
 // 5MB file size limit
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -72,9 +73,34 @@ export async function POST(req: NextRequest) {
 
         // 4️⃣ Store in MongoDB
         await dbConnect();
-        const saved = await Resume.create({
-            parsedData: parsedResume
+        const saved = await ResumeModel.create({
+          parsedText: parsedResume,
         });
+        const result = await ResumeModel.aggregate([
+          {
+            $match: {
+              _id: saved._id,
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "userId",
+              foreignField: "_id",
+              as: "user",
+            },
+          },
+          {
+            $unwind: "$user",
+          },
+          {
+            $project: {
+              _id: 0,
+              user: 1,
+              parsedText: 1,
+            },
+          },
+        ]);
 
         // 5️⃣ Cleanup: Delete from Cloudinary and local temp file
         if (cloudinaryPublicId) {
@@ -89,8 +115,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
             {
                 success: true,
-                resumeId: saved._id,
-                data: parsedResume
+                resume: result,
+                resumeId : saved._id
             },
             { status: 200 }
         );
