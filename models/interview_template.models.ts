@@ -10,6 +10,7 @@ export interface IInterviewTemplate {
     techTopics: string[];
     difficulty: Difficulty;
     hrEnabled: boolean;
+    customQuestions: string[];
 }
 
 const InterviewTemplateSchema = new Schema<IInterviewTemplate>(
@@ -34,6 +35,7 @@ const InterviewTemplateSchema = new Schema<IInterviewTemplate>(
             required: true,
         },
         hrEnabled: { type: Boolean, default: true },
+        customQuestions: { type: [String], default: [] },
     },
     { timestamps: true }
 );

@@ -1,29 +1,57 @@
-import { clerkMiddleware , createRouteMatcher } from '@clerk/nextjs/server';
-import {  NextResponse } from 'next/server'; 
+import { clerkMiddleware , createRouteMatcher , clerkClient } from '@clerk/nextjs/server';
+import {  NextRequest, NextResponse } from 'next/server'; 
 
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"])
-const ispublicRoutes = createRouteMatcher(["/", "/api/webhook/register", "/sign-up(.*)", "/sign-in(.*)"]);
+
+const isPublicRoute = createRouteMatcher([
+    "/",
+    "/api/webhook/register",
+    "/sign-up(.*)",
+    "/sign-in(.*)",
+]);
+const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
+const isProtectedRoute = createRouteMatcher(["/admin(.*)","/dashboard(.*)"]);
 
 // export default clerkMiddleware()
 
-export default clerkMiddleware(async (auth, req) => {
-    const { isAuthenticated } = await auth()
-
+export default clerkMiddleware(async (auth, req : NextRequest) => {
+    const {  isAuthenticated ,  userId } = await auth()
     try {
-        if (!isAuthenticated && isProtectedRoute(req)) {
-            return NextResponse.redirect(new URL("/sign-in", req.url))
+        // Protect all non-public routes
+        if (!isAuthenticated && !isPublicRoute(req)) {
+            return NextResponse.redirect(
+                new URL("/sign-in", req.url)
+            );
+
         }
-        if(isAuthenticated && ispublicRoutes(req)){
-            return NextResponse.redirect(new URL("/dashboard", req.url))
+
+        if (userId) {
+            const client = await clerkClient();
+            const user = await client.users?.getUser(userId);
+            const role = user.publicMetadata.role as string | undefined;
+            if (isAdminRoute(req) && role !== "admin") {
+                return NextResponse.redirect(new URL("/dashboard", req.url));
+            }
+
+            if (role === "admin" && req.nextUrl.pathname === "/dashboard") {
+                return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+            }
+
+            //redirect auth users to access public routes
+            if (isPublicRoute(req) && (
+                req.nextUrl.pathname.startsWith("/sign-in") ||
+                req.nextUrl.pathname.startsWith("/sign-up")
+            )) {
+                const redirectUrl = role === "admin" ? "/admin/dashboard" : "/dashboard";
+                return NextResponse.redirect(new URL(redirectUrl, req.url));
+            }
         }
+    
         return NextResponse.next();
     } catch (error) {
-        console.error("Error fetching user data from Clerk:", error);
+        console.error("Middleware error:", error);
         return NextResponse.redirect(new URL("/error", req.url));
     }
 })
-
-// export default clerkMiddleware();
 
 export const config = {
     matcher: [

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { Inter, Space_Grotesk} from "next/font/google";
+import './globals.css'
 import {
   ClerkProvider,
   SignInButton,
@@ -10,15 +10,20 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
 });
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -36,7 +41,7 @@ export default function RootLayout({
     >
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}
           >
             <header className="flex justify-end items-center p-4 gap-4 h-16">
             <SignedOut>
@@ -51,7 +56,7 @@ export default function RootLayout({
               <UserButton />
             </SignedIn>
           </header>
-          {children}
+          {children }
         </body>
       </html>
     </ClerkProvider>

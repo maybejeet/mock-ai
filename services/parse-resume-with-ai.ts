@@ -1,4 +1,4 @@
-import { Agent , run , tool} from "@openai/agents"
+import { Agent , run } from "@openai/agents"
 import {z} from "zod"
 import {extractTextFromPdf} from "./extraxt-text-from-pdf"
 import {  ResumeSchema } from "@/schemas/resumeSchema"

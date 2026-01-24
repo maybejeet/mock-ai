@@ -4,8 +4,8 @@ import { InterviewStatus } from "./enums";
 export interface IInterviewSession {
     _id: Types.ObjectId;
     templateId: Types.ObjectId;
-    teacherId: Types.ObjectId;
-    studentId: Types.ObjectId;
+    createdById: Types.ObjectId;
+    attendedById: Types.ObjectId;
     status: InterviewStatus;
     interviewLink: string;
     startedAt: Date;
@@ -19,8 +19,12 @@ const InterviewSessionSchema = new Schema<IInterviewSession>(
             ref: "InterviewTemplate",
             required: true,
         },
-        teacherId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-        studentId: {
+        createdById: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        attendedById: {
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
