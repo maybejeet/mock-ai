@@ -38,3 +38,21 @@ export async function POST(request: Request) {
     return new Response("Failed to create interview template", { status: 500 });
   }
 }
+
+export async function GET(request: Request) {
+  const { userId } = await auth();
+  if (!userId) return new Response("Unauthorized access", { status: 401 });
+  
+  try {
+    await dbConnect();
+    const user = await UserModel.findOne({ clerkId: userId })
+    if (!user) return new Response("User not found", { status: 404 });
+    const user_id = user._id.toString();
+    const interviewTemplates = await InterviewTemplateModel.find({ createdBy: user_id });
+    // const fetchedInterviewTemplatesData = 
+    return new Response(JSON.stringify(interviewTemplates), { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return new Response("Failed to fetch interview templates", { status: 500 });
+  }
+}

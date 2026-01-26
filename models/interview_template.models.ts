@@ -20,7 +20,7 @@ const InterviewTemplateSchema = new Schema<IInterviewTemplate>(
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
-            index: true,
+          index: true,
         },
         role: { type: String, required: true },
         rounds: {

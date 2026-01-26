@@ -20,7 +20,7 @@ const Index = () => {
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-end gap-4">
             <Link href="/sign-in">
               <Button variant="ghost" className="font-medium">
                 Sign in
