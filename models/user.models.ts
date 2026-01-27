@@ -1,4 +1,4 @@
-import { Schema, model, Types } from "mongoose";
+import mongoose, { Schema, model, Types } from "mongoose";
 // import { UserRole } from "./enums";
 export interface IUser {
     _id: Types.ObjectId;
@@ -23,4 +23,4 @@ const UserSchema = new Schema<IUser>(
     { timestamps: true }
 );
 
-export const UserModel = model<IUser>("User", UserSchema);
+export const UserModel = mongoose.models.User<IUser> || mongoose.model<IUser>("User", UserSchema);

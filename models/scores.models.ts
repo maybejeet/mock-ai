@@ -1,4 +1,4 @@
-import {Schema, model, Types} from "mongoose";
+import mongoose, {Schema, model, Types} from "mongoose";
 import {InterviewRound} from "./enums";
 export interface IScore {
     _id: Types.ObjectId;
@@ -30,4 +30,4 @@ const ScoreSchema = new Schema<IScore>(
 ScoreSchema.index({ qaItemId: 1 }, { unique: true });
 ScoreSchema.index({ round: 1 });
 
-export const ScoreModel = model<IScore>("Score", ScoreSchema);
+export const ScoreModel = mongoose.models.Score<IScore> || mongoose.model<IScore>("Score", ScoreSchema);

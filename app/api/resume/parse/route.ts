@@ -4,18 +4,21 @@ import dbConnect from "@/lib/dbConnect";
 import { ResumeModel } from "@/models/resume.models";
 import { downloadFile, cleanupFile } from "@/lib/downloadFile";
 import { parseResumeWithAI } from "@/services/parse-resume-with-ai";
-import { Mongoose } from "mongoose";
+import { auth } from "@clerk/nextjs/server";
+import { UserModel } from "@/models/user.models";
+//400
 
 // 5MB file size limit
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 export async function POST(req: NextRequest) {
+  const { userId } = await auth();
     let localFilePath: string | null = null;
     let cloudinaryPublicId: string | null = null;
 
     try {
         const formData = await req.formData();
-        const file = formData.get("file") as File;
+        const file = formData.get("resumeFile") as File;
 
         // Validate file type
         if (!file || file.type !== "application/pdf") {
@@ -72,35 +75,17 @@ export async function POST(req: NextRequest) {
         }
 
         // 4️⃣ Store in MongoDB
-        await dbConnect();
-        const saved = await ResumeModel.create({
-          parsedText: parsedResume,
-        });
-        const result = await ResumeModel.aggregate([
-          {
-            $match: {
-              _id: saved._id,
-            },
-          },
-          {
-            $lookup: {
-              from: "users",
-              localField: "userId",
-              foreignField: "_id",
-              as: "user",
-            },
-          },
-          {
-            $unwind: "$user",
-          },
-          {
-            $project: {
-              _id: 0,
-              user: 1,
-              parsedText: 1,
-            },
-          },
-        ]);
+      await dbConnect();
+      const user = await UserModel.findOne({ clerkId : userId });
+      // const saved = await ResumeModel.create({
+      //   parsedText: parsedResume,
+      //   userId: user._id,
+      // });
+     const saved = await ResumeModel.findOneAndUpdate(
+        { userId: user._id },
+        { parsedText: parsedResume },
+        { upsert: true, new: true }
+      );
 
         // 5️⃣ Cleanup: Delete from Cloudinary and local temp file
         if (cloudinaryPublicId) {
@@ -115,7 +100,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
             {
                 success: true,
-                resume: result,
+                resume: saved,
                 resumeId : saved._id
             },
             { status: 200 }

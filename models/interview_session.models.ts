@@ -1,5 +1,6 @@
-import { Schema, model, Types } from "mongoose";
+import mongoose, { Schema, model, Types } from "mongoose";
 import { InterviewStatus } from "./enums";
+import { Mongoose } from "mongoose";
 
 export interface IInterviewSession {
     _id: Types.ObjectId;
@@ -52,7 +53,7 @@ InterviewSessionSchema.index({ teacherId: 1 });
 InterviewSessionSchema.index({ status: 1 });
 InterviewSessionSchema.index({ templateId: 1 });
 
-export const InterviewSessionModel = model<IInterviewSession>(
+export const InterviewSessionModel = mongoose.models.InterviewSession || mongoose.model<IInterviewSession>(
     "InterviewSession",
     InterviewSessionSchema
 );

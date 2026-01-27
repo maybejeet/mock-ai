@@ -1,4 +1,4 @@
-import { Schema, model, Types } from "mongoose";
+import mongoose, { Schema, model, Types } from "mongoose";
 
 export interface IFinalOutput {
     _id: Types.ObjectId;
@@ -25,7 +25,7 @@ const FinalOutputSchema = new Schema<IFinalOutput>(
 );
 FinalOutputSchema.index({ sessionId: 1 }, { unique: true });
 
-export const FinalOutputModel = model<IFinalOutput>(
+export const FinalOutputModel = mongoose.models.FinalOutput<IFinalOutput> || model<IFinalOutput>(
     "FinalOutput",
     FinalOutputSchema
 );

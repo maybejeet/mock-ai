@@ -1,25 +1,27 @@
 import { MoreVertical, Share2, Users } from "lucide-react";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 interface InterviewCardProps {
+  id: string;
   title: string;
   company: string;
   description: string;
   status: string | "Active" | "Draft" | "Completed";
   responses: number;
-  role: string
+  role: string;
 }
 
-export function InterviewCard({ title, company, description, status, responses, role }: InterviewCardProps) {
+export function InterviewCard({ id, title, company, description, status, responses, role }: InterviewCardProps) {
   // Helper to define badge styles based on status
   const getStatusStyles = (status: string) => {
     switch (status) {
@@ -42,12 +44,12 @@ export function InterviewCard({ title, company, description, status, responses, 
           <MoreVertical className="h-4 w-4" />
         </Button>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         <CardDescription className="text-slate-600 line-clamp-2 min-h-[40px]">
           {description}
         </CardDescription>
-        
+
         <div className="flex gap-2 items-center">
           <Badge className={`rounded-full px-3 py-0.5 font-medium ${getStatusStyles(status)}`}>
             {status}
@@ -60,9 +62,11 @@ export function InterviewCard({ title, company, description, status, responses, 
       </CardContent>
 
       <CardFooter className="flex gap-2 pt-2">
-        <Button variant="outline" className="w-[90%] bg-slate-50/50 border-slate-200 text-slate-700 hover:bg-slate-100">
-          View Details
-        </Button>
+        <Link href={`/dashboard/interview/${id}`} className="flex-1">
+          <Button variant="outline" className="w-full bg-slate-50/50 border-slate-200 text-slate-700 hover:bg-slate-100">
+            View Details
+          </Button>
+        </Link>
         <Button variant="outline" size="icon" className="shrink-0 border-slate-200 text-slate-500">
           <Share2 className="h-4 w-4" />
         </Button>

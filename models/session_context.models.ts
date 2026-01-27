@@ -1,4 +1,4 @@
-import {Schema, model, Types} from "mongoose";
+import mongoose, {Schema, model, Types} from "mongoose";
 import {ConfidenceTrend, Difficulty} from "./enums";
 export interface ISessionContext {
     _id: Types.ObjectId;
@@ -35,7 +35,7 @@ const SessionContextSchema = new Schema<ISessionContext>(
 );
 SessionContextSchema.index({ sessionId: 1 }, { unique: true });
 
-export const SessionContextModel = model<ISessionContext>(
+export const SessionContextModel = mongoose.models.SessionContext<ISessionContext> || mongoose.model<ISessionContext>(
     "SessionContext",
     SessionContextSchema
 );

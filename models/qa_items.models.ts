@@ -1,4 +1,4 @@
-import { Schema , model , Types } from "mongoose";
+import mongoose, { Schema , model , Types } from "mongoose";
 import { Difficulty, InterviewRound } from "./enums";
 
 export interface IQAItem {
@@ -50,4 +50,4 @@ QAItemSchema.index({ sessionId: 1 });
 QAItemSchema.index({ sessionId: 1, round: 1 });
 QAItemSchema.index({ topic: 1 });
 
-export const QAItemModel = model<IQAItem>("QAItem", QAItemSchema);
+export const QAItemModel = mongoose.models.QAItem<IQAItem> || mongoose.model<IQAItem>("QAItem", QAItemSchema);

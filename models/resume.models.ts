@@ -1,4 +1,4 @@
-import { Schema, model, Types } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
 export interface IResume {
     _id: Types.ObjectId;
@@ -11,13 +11,13 @@ const ResumeSchema = new Schema<IResume>(
         userId: {
             type: Schema.Types.ObjectId,
             ref: "User",
-            required: true,
-            index: true,
+           // required: true,
+            unique: true,
         },
         parsedText: { type: Schema.Types.Mixed, required: true },
     },
     { timestamps: true }
 );
-ResumeSchema.index({ user: 1 }, { unique: true });
 
-export const ResumeModel = model<IResume>("Resume", ResumeSchema);
+
+export const ResumeModel = mongoose.models.Resume<IResume> || mongoose.model<IResume>("Resume", ResumeSchema);
