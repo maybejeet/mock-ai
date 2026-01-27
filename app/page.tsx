@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Users, BarChart3 } from "lucide-react";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 const Index = () => {
+  const {user} = useUser();
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -19,7 +21,9 @@ const Index = () => {
               InterviewAI
             </span>
           </div>
-
+          {user ? (
+            <UserButton/>
+          ): (
           <div className="flex items-end gap-4">
             <Link href="/sign-in">
               <Button variant="ghost" className="font-medium">
@@ -33,6 +37,8 @@ const Index = () => {
               </Button>
             </Link>
           </div>
+          )}
+          
         </div>
       </nav>
 
@@ -204,7 +210,7 @@ const Index = () => {
             </span>
           </div>
           <p className="text-sm text-muted-foreground">
-            © 2024 InterviewAI. All rights reserved.
+            © 2026 InterviewAI. All rights reserved.
           </p>
         </div>
       </footer>

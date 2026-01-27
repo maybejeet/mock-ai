@@ -78,6 +78,10 @@ export default function InterviewDetailsPage() {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const handlePreviewInterview = () => {
+        window.open(getInterviewLink(), "_blank");
+    };
+
     const getStatusBadge = () => {
         // Based on rounds and if there are responses
         if (interview?.responseCount && interview.responseCount > 0) {
@@ -242,7 +246,9 @@ export default function InterviewDetailsPage() {
                                 </Button>
                             </div>
 
-                            <Button className="w-full bg-slate-800 hover:bg-slate-700 text-white">
+                <Button
+                  onClick={handlePreviewInterview}
+                  className="w-full bg-slate-800 hover:bg-slate-700 text-white">
                                 Preview Interview
                             </Button>
                         </div>

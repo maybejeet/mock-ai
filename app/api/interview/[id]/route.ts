@@ -5,7 +5,7 @@ import { UserModel } from "@/models/user.models";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest } from "next/server";
 
-
+ 
 export async function GET(request: NextRequest,{ params }: { params: Promise<{ id: string }> }){
     const { userId } = await auth();
     if (!userId) return new Response("Unauthorized access", { status: 401 });
