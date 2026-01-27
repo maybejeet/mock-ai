@@ -79,7 +79,34 @@ const Index = () => {
             Perfect for students and professionals preparing for their next
             big opportunity.
           </motion.p>
-
+          
+          {user ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <Link href="/dashboard">
+                <Button
+                  size="lg"
+                  className="h-14 px-8 text-base font-medium w-full sm:w-auto"
+                >
+                  See Dashboard
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+              <Link href="/dashboard/create">
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-14 px-8 text-base font-medium"
+              >
+                Create Interview
+                </Button>
+              </Link>
+            </motion.div>
+          ): (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -103,6 +130,8 @@ const Index = () => {
               Watch Demo
             </Button>
           </motion.div>
+          )}
+          
         </div>
       </section>
 
