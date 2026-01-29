@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Mock Interview Platform
 
-## Getting Started
+An advanced AI-powered mock interview application built with Next.js, designed to help users prepare for job interviews through realistic, interactive sessions.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **AI-Powered Interviews**: Interactive interview sessions driven by OpenAI agents.
+- **Smart Resume Parsing**: Automatically extracts and analyzes resume details using AI.
+- **Real-time Interaction**: Video and audio-enabled interview environment.
+- **Comprehensive Dashboard**: Manage interviews, view history, and track progress.
+- **Secure Authentication**: Integrated with Clerk for robust user management.
+- **Responsive Design**: Beautiful UI built with Tailwind CSS and Radix UI.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS, Radix UI, Lucide React
+- **Database**: MongoDB (Mongoose)
+- **Authentication**: Clerk
+- **AI/ML**: OpenAI API (`@openai/agents`)
+- **File Storage**: Cloudinary
+- **Form Handling**: React Hook Form + Zod
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏁 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js (v18 or higher)
+- MongoDB instance (Atlas or local)
+- Clerk account
+- OpenAI API key
+- Cloudinary account
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd mock-interview
+   ```
 
-## Deploy on Vercel
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Environment Setup**
+   Create a `.env` file in the root directory with the following variables:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```env
+   # Database
+   MONGODB_URI=your_mongodb_connection_string
+
+   # Authentication (Clerk)
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+   CLERK_SECRET_KEY=your_clerk_secret_key
+   WEBHOOK_SECRET=your_clerk_webhook_secret
+
+   # AI (OpenAI)
+   OPENAI_API_KEY=your_openai_api_key
+
+   # Storage (Cloudinary)
+   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+   CLOUDINARY_API_KEY=your_api_key
+   CLOUDINARY_API_SECRET=your_api_secret
+   
+   # App URL
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 📁 Project Structure
+
+- `/app` - Next.js App Router pages and API routes
+- `/components` - Reusable UI components
+- `/lib` - Utility functions and configurations
+- `/models` - Mongoose database models
+- `/services` - Business logic and AI services
+- `/schemas` - Zod validation schemas
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
