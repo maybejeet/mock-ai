@@ -50,7 +50,7 @@ EXTRACTION RULES:
 - For skills: Extract exact skill names (programming languages, frameworks, tools, etc.)
 - For experience: Include job title, company name, duration, and key responsibilities
 - For education: Include degree, institution, and year of completion
-- For projects: Include title, description, and technologies used
+- For projects: Include title, brief description, and technologies used
 - For contact info: Extract email, phone, LinkedIn, GitHub URLs exactly as written
 - For achievements/awards/honors: Only include if explicitly mentioned
 

@@ -1,4 +1,4 @@
-import mongoose, {Schema, model, Types} from "mongoose";
+import mongoose, {Schema, Types} from "mongoose";
 import {ConfidenceTrend, Difficulty} from "./enums";
 export interface ISessionContext {
     _id: Types.ObjectId;

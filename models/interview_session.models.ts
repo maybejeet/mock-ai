@@ -1,6 +1,6 @@
 import mongoose, { Schema, model, Types } from "mongoose";
 import { InterviewStatus } from "./enums";
-import { Mongoose } from "mongoose";
+
 
 export interface IInterviewSession {
     _id: Types.ObjectId;
