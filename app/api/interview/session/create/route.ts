@@ -7,8 +7,8 @@ import { UserModel } from "@/models/user.models";
 
 export async function POST(req: Request) {
   const { userId } = await auth()
-  if (!userId) return new Response("Unauthorized access", { status: 401 })  
-  const { interviewLink } = await req.json()  
+  if (!userId) return new Response("Unauthorized access", { status: 401 })
+  const { interviewLink } = await req.json()
   //Gets the id for the interview template to extract the data out of it
   const id = interviewLink.split("/").pop();
   const url = new URL(interviewLink);
@@ -21,14 +21,14 @@ export async function POST(req: Request) {
     const user = await UserModel.findOne({ clerkId: userId })
     const interviewSession = await InterviewSessionModel.create({
       createdById: createdBy,
-      attendedById : user._id,
+      attendedById: user._id,
       templateId: InterviewTemplate._id,
       status: "HR_ACTIVE",
       interviewLink: `${url.origin}/interview/take/${id}`,
       startedAt: Date.now(),
-      endedAt: null,      
+      endedAt: null,
     })
-    return new Response(JSON.stringify(interviewSession), { status: 201 })
+    return Response.json({ data: interviewSession }, { status: 201 })
   } catch (error) {
     console.log("Error creating the interview session", error);
     return new Response("Error creating the interview session", { status: 500 })

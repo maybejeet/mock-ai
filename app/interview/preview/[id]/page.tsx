@@ -134,7 +134,9 @@ export default function InterviewPreviewPage() {
     }
     // Here you would typically upload the resume first if needed
     // Then redirect to the actual interview session
-    router.push(`/interview/take/${interview._id}`);
+    const result = await response.json();
+    const interviewSessionId = result.data._id;
+    router.push(`/interview/take/${interviewSessionId}`);
   };
 
   if (loading) {
@@ -198,13 +200,12 @@ export default function InterviewPreviewPage() {
               <span>Difficulty : </span>
               <span
                 className={`px-2 py-0.5 rounded text-xs font-medium border
-                                ${
-                                  interview.difficulty === "Easy"
-                                    ? "bg-green-50 text-green-700 border-green-200"
-                                    : interview.difficulty === "Medium"
-                                      ? "bg-yellow-50 text-yellow-700 border-yellow-200"
-                                      : "bg-red-50 text-red-700 border-red-200"
-                                }`}
+                                ${interview.difficulty === "Easy"
+                    ? "bg-green-50 text-green-700 border-green-200"
+                    : interview.difficulty === "Medium"
+                      ? "bg-yellow-50 text-yellow-700 border-yellow-200"
+                      : "bg-red-50 text-red-700 border-red-200"
+                  }`}
               >
                 {interview.difficulty}
               </span>
